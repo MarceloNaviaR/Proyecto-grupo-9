@@ -53,8 +53,53 @@ describe("Gastos", () => {
     };
     gastos.registrarGasto(gastoCine);
 
-    //Then --assert
     let gastosRegistrados = gastos.obtenerGastos();
     expect(gastosRegistrados).toEqual([gastoPasajes, gastoCine]);
   });
+
+  it("registrar varios gastos", () => {
+    //Given -- arrange
+    const gastos = new Gastos();
+    const  gastoPasajes = {
+      fecha: "2024-08-12",
+      monto: 20,
+      descripcion: "pasajes",
+    };
+    gastos.registrarGasto(gastoPasajes);
+
+    //When -act
+    const gastoCine = {
+      fecha: "2024-05-06",
+      monto: 23,
+      descripcion: "cine",
+    };
+    gastos.registrarGasto(gastoCine);
+
+    let gastosRegistrados = gastos.obtenerGastos();
+    expect(gastosRegistrados).toEqual([gastoPasajes, gastoCine]);
+  });
+
+  it("registrar varios gastos", () => {
+    //Given -- arrange
+    const gastos = new Gastos();
+    const  gastoPasajes = {
+      fecha: "2024-08-12",
+      monto: 20,
+      descripcion: "pasajes",
+    };
+    gastos.registrarGasto(gastoPasajes);
+
+    //When -act
+    const gastoCine = {
+      fecha: "2024-05-06",
+      monto: 23,
+      descripcion: "cine",
+    };
+    gastos.registrarGasto(gastoCine);
+
+    let gastosRegistrados = gastos.obtenerGastos();
+    expect(gastosRegistrados).toEqual([gastoPasajes, gastoCine]);
+  });
+
+
 });
