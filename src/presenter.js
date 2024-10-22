@@ -1,39 +1,60 @@
 import Gastos from "./gastos.js";
-import Historial from "./historialgastos.js";
+import Ingresos from "./ingresos.js";
 
-const form = document.querySelector("#gastos-form");
+// ***** Manejo de Gastos *****
+const formGastos = document.querySelector("#gastos-form");
 const gastosDiv = document.querySelector("#gastos-div");
 const gastos = new Gastos();
-const historial = new Historial(gastos);
 
 const displayGastos = () => {
   const gastosRegistrados = gastos.obtenerGastos();
   gastosDiv.innerHTML = "<ul>";
-  gastosRegistrados.forEach(({ fecha, monto, descripcion, categoria }) => {
-    gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion} | ${categoria}</li>`;
+  gastosRegistrados.forEach(({ fecha, monto, descripcion }) => {
+    gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion}</li>`;
   });
   gastosDiv.innerHTML += "</ul>";
 };
 
-form.addEventListener("submit", (event) => {
+formGastos.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const fecha = document.querySelector("#fecha").value;
-  const monto = Number.parseInt(document.querySelector("#monto").value);
-  const descripcion = document.querySelector("#descripcion").value;
-  const categoria = document.querySelector("#categoria").value;
+  const fechaGasto = document.querySelector("#fecha").value;
+  const montoGasto = parseFloat(document.querySelector("#monto").value);
+  const descripcionGasto = document.querySelector("#descripcion").value;
 
-  gastos.registrarGasto(fecha, monto, descripcion,categoria);
-  displayGastos(historial.obtenerGastosOrdenadosPorFecha());
+  if (fechaGasto && !isNaN(montoGasto) && descripcionGasto) {
+    gastos.registrarGasto(fechaGasto, montoGasto, descripcionGasto);
+    displayGastos();
+  } else {
+    alert("Por favor, rellena todos los campos correctamente en el formulario de gastos.");
+  }
 });
 
-document.querySelector("#filtrar-categoria-btn").addEventListener("click", () => {
-  const categoria = document.querySelector("#filtro-categoria").value;
-  displayGastos(historial.filtrarGastosPorCategoria(categoria));
-});
+// ***** Manejo de Ingresos *****
+const formIngresos = document.querySelector("#ingresos-form");
+const ingresosDiv = document.querySelector("#ingresos-div");
+const ingresos = new Ingresos();
 
-document.querySelector("#filtrar-fechas-btn").addEventListener("click", () => {
-  const fechaInicio = document.querySelector("#fecha-inicio").value;
-  const fechaFin = document.querySelector("#fecha-fin").value;
-  displayGastos(historial.filtrarGastosPorRangoFecha(fechaInicio, fechaFin));
+const displayIngresos = () => {
+  const ingresosRegistrados = ingresos.obtenerIngresos();
+  ingresosDiv.innerHTML = "<ul>";
+  ingresosRegistrados.forEach(({ fecha, monto, descripcion }) => {
+    ingresosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion}</li>`;
+  });
+  ingresosDiv.innerHTML += "</ul>";
+};
+
+formIngresos.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const fechaIngreso = document.querySelector("#fecha-ingreso").value;
+  const montoIngreso = parseFloat(document.querySelector("#monto-ingreso").value);
+  const descripcionIngreso = document.querySelector("#fuente-ingreso").value;
+
+  if (fechaIngreso && !isNaN(montoIngreso) && descripcionIngreso) {
+    ingresos.registrarIngreso(fechaIngreso, montoIngreso, descripcionIngreso);
+    displayIngresos();
+  } else {
+    alert("Por favor, rellena todos los campos correctamente en el formulario de ingresos.");
+  }
 });

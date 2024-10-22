@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <title>Gastos</title>
+    <title>Gastos e Ingresos</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
     <h1>Registro de gasto</h1>
     <form id="gastos-form">
-      <label for="fecha">Fecha:</label>
+      <label for="fecha-gasto">Fecha:</label>
       <input type="date" id="fecha" required />
 
-      <label for="monto">Monto:</label>
+      <label for="monto-gasto">Monto:</label>
       <input type="number" id="monto" required />
 
-      <label for="descripcion">Descripción:</label>
+      <label for="descripcion-gasto">Descripción:</label>
       <input type="text" id="descripcion" required />
 
+<<<<<<< HEAD
       <label for="categoria">Categoría:</label>
       <select id="categoria" required>
         <option value="Sin Categoria" disabled selected>Selecciona una categoría</option>
@@ -30,8 +31,26 @@
       <button type="submit" id="registrar-gasto-button">
         Registrar gasto
       </button>
+=======
+      <button type="submit" id="registrar-gasto-button">Registrar gasto</button>
+>>>>>>> RegistrarIngresos
     </form>
     <div id="gastos-div"></div>
+
+    <h1>Registro de ingreso</h1>
+  <form id="ingresos-form">
+  <label for="fecha-ingreso">Fecha:</label>
+  <input type="date" id="fecha-ingreso" required />
+
+  <label for="monto-ingreso">Monto:</label>
+  <input type="number" id="monto-ingreso" required />
+
+  <label for="fuente-ingreso">Descripción:</label>
+  <input type="text" id="fuente-ingreso" required />
+
+  <button type="submit" id="registrar-ingresos-button">Registrar ingreso</button>
+  </form>
+    <div id="ingresos-div"></div>
 
     <script type="module" src="./src/presenter.js"></script>
   </body>
