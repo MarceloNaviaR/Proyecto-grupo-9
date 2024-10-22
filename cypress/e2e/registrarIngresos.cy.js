@@ -1,5 +1,5 @@
 it("debería mostrar el ingreso registrado", () => {
-    cy.visit("http://localhost:1234");
+    cy.visit("/");
     cy.get("#fecha-ingreso").type("2024-10-14");
     cy.get("#monto-ingreso").type(55);
     cy.get("#fuente-ingreso").type("ahorro");
