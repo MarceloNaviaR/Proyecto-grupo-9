@@ -35,6 +35,24 @@
       <button type="submit" id="registrar-gasto-button">Registrar gasto</button>
 >>>>>>> RegistrarIngresos
     </form>
+
+    <h2>Filtrar por Categoría</h2>
+    <label for="filtro-categoria">Categoría:</label>
+    <select id="filtro-categoria">
+      <option value="comida">Comida</option>
+      <option value="transporte">Transporte</option>
+      <option value="entretenimiento">Entretenimiento</option>
+      <option value="otros">Otros</option>
+    </select>
+    <button id="filtrar-categoria-btn">Filtrar</button>
+
+    <h2>Filtrar por Rango de Fechas</h2>
+    <label for="fecha-inicio">Desde:</label>
+    <input type="date" id="fecha-inicio" />
+    <label for="fecha-fin">Hasta:</label>
+    <input type="date" id="fecha-fin" />
+    <button id="filtrar-fechas-btn">Filtrar</button>
+
     <div id="gastos-div"></div>
 
     <h1>Registro de ingreso</h1>
