@@ -1,5 +1,6 @@
 import Gastos from "./gastos.js";
 import Ingresos from "./ingresos.js";
+import Presupuesto from "./presupuestos.js";
 
 // ***** Manejo de Gastos *****
 const formGastos = document.querySelector("#gastos-form");
@@ -57,4 +58,17 @@ formIngresos.addEventListener("submit", (event) => {
   } else {
     alert("Por favor, rellena todos los campos correctamente en el formulario de ingresos.");
   }
+});
+
+//Presupuesto
+const montoPresupuesto = document.querySelector("#monto-presupuesto")
+const form_presupuesto = document.querySelector("#presupuesto-form")
+const div_presupuesto = document.querySelector("#presupuesto-div")
+const presupuestito = new Presupuesto;
+
+form_presupuesto.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const valor_presupuesto = Number.parseInt(montoPresupuesto.value);
+  presupuestito.agregarMonto(valor_presupuesto);
+  div_presupuesto.innerHTML = "<p>" + presupuestito.mostrarMonto() + "</p>";
 });
