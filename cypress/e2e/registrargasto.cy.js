@@ -82,4 +82,30 @@ describe('Historial de Gastos', () => {
       .and("contain", "Transporte");
     cy.get("#gastos-div").should("not.contain", "2024-10-14");
   });
+
+  it("debería mostrar solo los gastos dentro del rango de fechas seleccionado", () => {
+    cy.visit("/");
+    cy.get("#fecha").type("2024-10-14");
+    cy.get("#monto").type(55);
+    cy.get("#descripcion").type("Fotocopias varias");
+    cy.get("#categoria").select("Otros");
+    cy.get("#registrar-gasto-button").click();
+
+    cy.get("#fecha").clear().type("2024-12-01");
+    cy.get("#monto").clear().type(100);
+    cy.get("#descripcion").clear().type("Ropa");
+    cy.get("#categoria").select("Otros");
+    cy.get("#registrar-gasto-button").click();
+
+    cy.get("#fecha-inicio").type("2024-01-01");
+    cy.get("#fecha-fin").type("2024-11-01");
+    cy.get("#filtrar-fechas-btn").click();
+
+    cy.get("#gastos-div")
+      .should("contain", "2024-10-14")
+      .and("contain", "55")
+      .and("contain", "Fotocopias varias");
+    cy.get("#gastos-div").should("not.contain", "2024-12-01");
+  });
+
 });
