@@ -38,3 +38,23 @@ describe("Registro de gasto", () => {
       .and("contain", "Vestimenta");
   });
 });
+
+describe('Historial de Gastos', () => {
+  it("debería mostrar los gastos ordenados por fecha", () => {
+      cy.visit("/");
+      cy.get("#fecha").type("2024-12-01");
+      cy.get("#monto").type(100);
+      cy.get("#descripcion").type("Ropa");
+      cy.get("#categoria").select("Otros");
+      cy.get("#registrar-gasto-button").click();
+  
+      cy.get("#fecha").clear().type("2024-10-14");
+      cy.get("#monto").clear().type(55);
+      cy.get("#descripcion").clear().type("Fotocopias varias");
+      cy.get("#categoria").select("Alimentación");
+      cy.get("#registrar-gasto-button").click();
+  
+      cy.get("#gastos-div li").eq(1).should("contain", "2024-10-14");
+      cy.get("#gastos-div li").eq(0).should("contain", "2024-12-01");
+  }); 
+});
