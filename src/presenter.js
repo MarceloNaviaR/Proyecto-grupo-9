@@ -7,8 +7,8 @@ const gastos = new Gastos();
 const displayGastos = () => {
   const gastosRegistrados = gastos.obtenerGastos();
   gastosDiv.innerHTML = "<ul>";
-  gastosRegistrados.forEach(({ fecha, monto, descripcion }) => {
-    gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion}</li>`;
+  gastosRegistrados.forEach(({ fecha, monto, descripcion, categoria }) => {
+    gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion} | ${categoria}</li>`;
   });
   gastosDiv.innerHTML += "</ul>";
 };
@@ -19,7 +19,8 @@ form.addEventListener("submit", (event) => {
   const fecha = document.querySelector("#fecha").value;
   const monto = Number.parseInt(document.querySelector("#monto").value);
   const descripcion = document.querySelector("#descripcion").value;
+  const categoria = document.querySelector("#categoria").value;
 
-  gastos.registrarGasto(fecha, monto, descripcion);
+  gastos.registrarGasto(fecha, monto, descripcion, categoria);
   displayGastos();
 });
