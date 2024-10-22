@@ -1,19 +1,18 @@
-import ingreso from "./ingreso";
+import Ingreso from "./ingreso.js";
 
-class Ingreso {
+class Ingresos {
   constructor() {
     this.ingresos = [];
   }
 
-  registrarIngreso(fecha, monto, fuente) {
-    const nuevoIngreso = new ingreso(fecha, monto, fuente);
+  registrarIngreso(fecha, monto, descripcion) {
+    const nuevoIngreso = new Ingreso(fecha, monto, descripcion);
     this.ingresos.push(nuevoIngreso);
   }
 
-  obtenerIngreso() {
+  obtenerIngresos() {
     return this.ingresos;
   }
 }
 
-export default Ingreso;
-
+export default Ingresos;
