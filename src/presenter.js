@@ -36,3 +36,4 @@ document.querySelector("#filtrar-fechas-btn").addEventListener("click", () => {
   const fechaInicio = document.querySelector("#fecha-inicio").value;
   const fechaFin = document.querySelector("#fecha-fin").value;
   displayGastos(historial.filtrarGastosPorRangoFecha(fechaInicio, fechaFin));
+});
