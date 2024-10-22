@@ -1,8 +1,10 @@
 import Gastos from "./gastos.js";
+import Historial from "./historialgastos.js";
 
 const form = document.querySelector("#gastos-form");
 const gastosDiv = document.querySelector("#gastos-div");
 const gastos = new Gastos();
+const historial = new Historial(gastos);
 
 const displayGastos = () => {
   const gastosRegistrados = gastos.obtenerGastos();
@@ -21,6 +23,6 @@ form.addEventListener("submit", (event) => {
   const descripcion = document.querySelector("#descripcion").value;
   const categoria = document.querySelector("#categoria").value;
 
-  gastos.registrarGasto(fecha, monto, descripcion, categoria);
+  gastos.registrarGasto(fecha, monto, descripcion,categoria);
   displayGastos();
 });

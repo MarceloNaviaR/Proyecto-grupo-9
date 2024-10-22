@@ -13,6 +13,10 @@ class Gastos {
   obtenerGastos() {
     return this.gastos;
   }
+
+  obtenerGastosOrdenados() {
+    return this.gastos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+  }
 }
 
 export default Gastos;
