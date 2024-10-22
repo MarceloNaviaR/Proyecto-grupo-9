@@ -31,3 +31,8 @@ document.querySelector("#filtrar-categoria-btn").addEventListener("click", () =>
   const categoria = document.querySelector("#filtro-categoria").value;
   displayGastos(historial.filtrarGastosPorCategoria(categoria));
 });
+
+document.querySelector("#filtrar-fechas-btn").addEventListener("click", () => {
+  const fechaInicio = document.querySelector("#fecha-inicio").value;
+  const fechaFin = document.querySelector("#fecha-fin").value;
+  displayGastos(historial.filtrarGastosPorRangoFecha(fechaInicio, fechaFin));

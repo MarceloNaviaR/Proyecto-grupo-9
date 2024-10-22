@@ -12,6 +12,13 @@ class Historial {
     filtrarGastosPorCategoria(categoria) {
         return this.gastos.obtenerGastos().filter(gasto => gasto.categoria === categoria);
      }
+
+     filtrarGastosPorRangoFecha(fechaInicio, fechaFin) {
+      return this.gastos.obtenerGastos().filter(gasto => {
+        const fechaGasto = new Date(gasto.fecha);
+        return fechaGasto >= new Date(fechaInicio) && fechaGasto <= new Date(fechaFin);
+      });
+    }
 }
 
 export default Historial;
