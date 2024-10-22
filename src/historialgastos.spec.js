@@ -13,9 +13,10 @@ describe('Historial de Gastos', () => {
       });
 
     it("debería filtrar los gastos por categoría", () => {
+        const gastos = new Gastos();
         gastos.registrarGasto("2024-05-06", 23, "cine", "entretenimiento");
         gastos.registrarGasto("2024-08-12", 20, "pasajes", "transporte");
-    
+        const historial = new Historial(gastos);
         const filtrados = historial.filtrarGastosPorCategoria("transporte");
         expect(filtrados).toEqual([
           { fecha: "2024-08-12", monto: 20, descripcion: "pasajes", categoria: "transporte" },

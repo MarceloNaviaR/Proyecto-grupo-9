@@ -24,5 +24,10 @@ form.addEventListener("submit", (event) => {
   const categoria = document.querySelector("#categoria").value;
 
   gastos.registrarGasto(fecha, monto, descripcion,categoria);
-  displayGastos();
+  displayGastos(historial.obtenerGastosOrdenadosPorFecha());
+});
+
+document.querySelector("#filtrar-categoria-btn").addEventListener("click", () => {
+  const categoria = document.querySelector("#filtro-categoria").value;
+  displayGastos(historial.filtrarGastosPorCategoria(categoria));
 });
