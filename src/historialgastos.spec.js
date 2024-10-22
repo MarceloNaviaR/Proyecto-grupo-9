@@ -22,4 +22,15 @@ describe('Historial de Gastos', () => {
           { fecha: "2024-08-12", monto: 20, descripcion: "pasajes", categoria: "transporte" },
         ]);
     });
+
+    it("debería filtrar los gastos por rango de fechas", () => {
+        const gastos = new Gastos();
+        gastos.registrarGasto("2024-05-06", 23, "cine", "Entretenimiento");
+        gastos.registrarGasto("2024-08-12", 20, "pasajes", "Transporte");
+        const historial = new Historial(gastos);
+        const filtrados = historial.filtrarGastosPorRangoFecha("2024-01-01", "2024-06-01");
+        expect(filtrados).toEqual([
+          { fecha: "2024-05-06", monto: 23, descripcion: "cine", categoria: "Entretenimiento" },
+        ]);
+      });
 });
