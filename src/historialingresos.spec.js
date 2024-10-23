@@ -1,51 +1,36 @@
+import Historial from './historialingresos.js';
 import Ingresos from './ingresos.js';
-import Ingreso from './ingreso.js';
 
-// Crear un mock de la clase Ingreso
-jest.mock('./ingreso.js', () => {
-  return jest.fn().mockImplementation((fecha, monto, descripcion) => {
-    return { fecha, monto, descripcion };
-  });
-});
+describe('Historial de Ingresos', () => {
+    it("debería ordenar los ingresos por fecha correctamente", () => {
+        const ingresos = new Ingresos();
+        ingresos.registrarIngreso("2024-05-06", 1500, "Salario", "Sueldo");
+        ingresos.registrarIngreso("2024-08-12", 500, "Freelance", "Trabajo independiente");
+        const historial = new Historial(ingresos);
+        const ordenados = historial.obtenerIngresosOrdenadosPorFecha();
+        expect(ordenados[0].fecha).toBe("2024-05-06");
+        expect(ordenados[1].fecha).toBe("2024-08-12");
+    });
 
-describe('Ingresos', () => {
-  let ingresos;
+    it("debería filtrar los ingresos por categoría", () => {
+        const ingresos = new Ingresos();
+        ingresos.registrarIngreso("2024-05-06", 1500, "Salario", "Sueldo");
+        ingresos.registrarIngreso("2024-08-12", 500, "Freelance", "Trabajo independiente");
+        const historial = new Historial(ingresos);
+        const filtrados = historial.filtrarIngresosPorCategoria("Sueldo");
+        expect(filtrados).toEqual([
+            { fecha: "2024-05-06", monto: 1500, descripcion: "Salario", categoria: "Sueldo" },
+        ]);
+    });
 
-  // Inicializar la instancia de Ingresos antes de cada prueba
-  beforeEach(() => {
-    ingresos = new Ingresos();
-  });
-
-  test('debería registrar un nuevo ingreso', () => {
-    // Datos de prueba
-    const fecha = '2024-10-22';
-    const monto = 100;
-    const descripcion = 'Salario';
-
-    // Ejecutar el método registrarIngreso
-    ingresos.registrarIngreso(fecha, monto, descripcion);
-
-    // Verificar que se haya llamado a la clase Ingreso con los argumentos correctos
-    expect(Ingreso).toHaveBeenCalledWith(fecha, monto, descripcion);
-
-    // Verificar que el ingreso haya sido agregado al arreglo de ingresos
-    expect(ingresos.obtenerIngresos()).toEqual([{ fecha, monto, descripcion }]);
-  });
-
-  test('debería obtener todos los ingresos', () => {
-    // Registrar varios ingresos
-    ingresos.registrarIngreso('2024-10-21', 200, 'Bonus');
-    ingresos.registrarIngreso('2024-10-22', 300, 'Freelance');
-
-    // Verificar que obtenerIngresos devuelve el arreglo correcto
-    expect(ingresos.obtenerIngresos()).toEqual([
-      { fecha: '2024-10-21', monto: 200, descripcion: 'Bonus' },
-      { fecha: '2024-10-22', monto: 300, descripcion: 'Freelance' },
-    ]);
-  });
-
-  test('debería empezar con un arreglo vacío de ingresos', () => {
-    // Verificar que el arreglo de ingresos esté vacío inicialmente
-    expect(ingresos.obtenerIngresos()).toEqual([]);
-  });
+    it("debería filtrar los ingresos por rango de fechas", () => {
+        const ingresos = new Ingresos();
+        ingresos.registrarIngreso("2024-05-06", 1500, "Salario", "Sueldo");
+        ingresos.registrarIngreso("2024-08-12", 500, "Freelance", "Trabajo independiente");
+        const historial = new Historial(ingresos);
+        const filtrados = historial.filtrarIngresosPorRangoFecha("2024-01-01", "2024-06-01");
+        expect(filtrados).toEqual([
+            { fecha: "2024-05-06", monto: 1500, descripcion: "Salario", categoria: "Sueldo" },
+        ]);
+    });
 });
