@@ -1,4 +1,3 @@
-// src/ingreso.js
 class Ingreso {
   constructor(fecha, monto, descripcion) {
     this.fecha = fecha;
