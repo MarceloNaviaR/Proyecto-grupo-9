@@ -83,7 +83,7 @@ describe('Historial de Gastos', () => {
     cy.get("#gastos-div").should("not.contain", "2024-10-14");
   });
 
-  it.skip("debería mostrar solo los gastos dentro del rango de fechas seleccionado", () => {
+  it("debería mostrar solo los gastos dentro del rango de fechas seleccionado", () => {
     cy.visit("/");
     cy.get("#fecha").type("2024-10-14");
     cy.get("#monto").type(55);

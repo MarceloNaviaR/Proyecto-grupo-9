@@ -36,11 +36,11 @@ document.querySelector("#filtrar-categoria-btn").addEventListener("click", () =>
   displayGastos(gastosFiltrados);
 });
 
-
 document.querySelector("#filtrar-fechas-btn").addEventListener("click", () => {
   const fechaInicio = document.querySelector("#fecha-inicio").value;
   const fechaFin = document.querySelector("#fecha-fin").value;
-  displayGastos(historial.filtrarGastosPorRangoFecha(fechaInicio, fechaFin));
+  const gastosFiltrados = historial.filtrarGastosPorRangoFecha(fechaInicio, fechaFin);
+  displayGastos(gastosFiltrados);
 });
 
 // ***** Manejo de Ingresos *****
