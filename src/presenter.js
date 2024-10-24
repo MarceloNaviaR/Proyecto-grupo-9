@@ -1,24 +1,34 @@
+import Balance from "./balance.js";
 import Gastos from "./gastos.js";
 import Ingresos from "./ingresos.js";
-import Presupuesto from "./presupuestos.js";
-import Historial from "./historialgastos.js";
+
+// Instanciar clases
+const gastos = new Gastos();
+const ingresos = new Ingresos();
+const balance = new Balance(gastos, ingresos);
+
+// ***** Manejo de Balance *****
+const balanceDiv = document.querySelector("#balance-div");
+
+const actualizarBalance = () => {
+  const balanceActual = balance.calcularBalance(); // Calcular el balance
+  balanceDiv.innerHTML = `<p>Balance: ${balanceActual}</p>`; // Mostrar balance
+};
 
 // ***** Manejo de Gastos *****
-const form = document.querySelector("#gastos-form");
+const formGastos = document.querySelector("#gastos-form");
 const gastosDiv = document.querySelector("#gastos-div");
-const gastos = new Gastos();
-const historial = new Historial(gastos);
 
-const displayGastos = (gastosAmostrar = []) => {
+const displayGastos = () => {
+  const gastosRegistrados = gastos.obtenerGastos();
   gastosDiv.innerHTML = "<ul>";
-  gastosAmostrar.forEach(({ fecha, monto, descripcion, categoria }) => {
+  gastosRegistrados.forEach(({ fecha, monto, descripcion, categoria }) => {
     gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion} | ${categoria}</li>`;
   });
   gastosDiv.innerHTML += "</ul>";
 };
 
-
-form.addEventListener("submit", (event) => {
+formGastos.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const fecha = document.querySelector("#fecha").value;
@@ -26,27 +36,14 @@ form.addEventListener("submit", (event) => {
   const descripcion = document.querySelector("#descripcion").value;
   const categoria = document.querySelector("#categoria").value;
 
-  gastos.registrarGasto(fecha, monto, descripcion,categoria);
-  displayGastos(historial.obtenerGastosOrdenadosPorFecha());
-});
-
-document.querySelector("#filtrar-categoria-btn").addEventListener("click", () => {
-  const categoria = document.querySelector("#filtro-categoria").value;
-  const gastosFiltrados = historial.filtrarGastosPorCategoria(categoria);
-  displayGastos(gastosFiltrados);
-});
-
-document.querySelector("#filtrar-fechas-btn").addEventListener("click", () => {
-  const fechaInicio = document.querySelector("#fecha-inicio").value;
-  const fechaFin = document.querySelector("#fecha-fin").value;
-  const gastosFiltrados = historial.filtrarGastosPorRangoFecha(fechaInicio, fechaFin);
-  displayGastos(gastosFiltrados);
+  gastos.registrarGasto(fecha, monto, descripcion, categoria);
+  displayGastos();
+  actualizarBalance(); // Actualizar balance después de registrar un gasto
 });
 
 // ***** Manejo de Ingresos *****
 const formIngresos = document.querySelector("#ingresos-form");
 const ingresosDiv = document.querySelector("#ingresos-div");
-const ingresos = new Ingresos();
 
 const displayIngresos = () => {
   const ingresosRegistrados = ingresos.obtenerIngresos();
@@ -64,23 +61,7 @@ formIngresos.addEventListener("submit", (event) => {
   const montoIngreso = parseFloat(document.querySelector("#monto-ingreso").value);
   const descripcionIngreso = document.querySelector("#fuente-ingreso").value;
 
-  if (fechaIngreso && !isNaN(montoIngreso) && descripcionIngreso) {
-    ingresos.registrarIngreso(fechaIngreso, montoIngreso, descripcionIngreso);
-    displayIngresos();
-  } else {
-    alert("Por favor, rellena todos los campos correctamente en el formulario de ingresos.");
-  }
-});
-
-//Presupuesto
-const montoPresupuesto = document.querySelector("#monto-presupuesto")
-const form_presupuesto = document.querySelector("#presupuesto-form")
-const div_presupuesto = document.querySelector("#presupuesto-div")
-const presupuestito = new Presupuesto;
-
-form_presupuesto.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const valor_presupuesto = Number.parseInt(montoPresupuesto.value);
-  presupuestito.agregarMonto(valor_presupuesto);
-  div_presupuesto.innerHTML = "<p>" + presupuestito.mostrarMonto() + "</p>";
+  ingresos.registrarIngreso(fechaIngreso, montoIngreso, descripcionIngreso);
+  displayIngresos();
+  actualizarBalance(); // Actualizar balance después de registrar un ingreso
 });
