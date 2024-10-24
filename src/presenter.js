@@ -19,8 +19,8 @@ const actualizarBalance = () => {
 const formGastos = document.querySelector("#gastos-form");
 const gastosDiv = document.querySelector("#gastos-div");
 
-const displayGastos = () => {
-  const gastosRegistrados = gastos.obtenerGastos();
+const displayGastos = (gastosFiltrados = null) => {
+  const gastosRegistrados = gastosFiltrados || gastos.obtenerGastos();
   gastosDiv.innerHTML = "<ul>";
   gastosRegistrados.forEach(({ fecha, monto, descripcion, categoria }) => {
     gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion} | ${categoria}</li>`;
@@ -64,4 +64,24 @@ formIngresos.addEventListener("submit", (event) => {
   ingresos.registrarIngreso(fechaIngreso, montoIngreso, descripcionIngreso);
   displayIngresos();
   actualizarBalance(); // Actualizar balance después de registrar un ingreso
+});
+
+// ***** Filtrar por Categoría *****
+document.querySelector("#filtrar-categoria-btn").addEventListener("click", () => {
+  const categoria = document.querySelector("#filtro-categoria").value;
+  const gastosFiltrados = gastos.obtenerGastos().filter(gasto => gasto.categoria === categoria);
+  displayGastos(gastosFiltrados);
+});
+
+// ***** Filtrar por Rango de Fechas *****
+document.querySelector("#filtrar-fechas-btn").addEventListener("click", () => {
+  const fechaInicio = new Date(document.querySelector("#fecha-inicio").value);
+  const fechaFin = new Date(document.querySelector("#fecha-fin").value);
+
+  const gastosFiltrados = gastos.obtenerGastos().filter(gasto => {
+    const fechaGasto = new Date(gasto.fecha);
+    return fechaGasto >= fechaInicio && fechaGasto <= fechaFin;
+  });
+
+  displayGastos(gastosFiltrados);
 });
