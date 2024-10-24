@@ -29,8 +29,8 @@ const displayGastos = (gastosAmostrar = []) => {
   gastosAmostrar.forEach(({ fecha, monto, descripcion, categoria }) => {
     gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion} | ${categoria}</li>`;
   });
-  contenedor.innerHTML += "</ul>";
-  contenedor.innerHTML += "</ul>";
+  gastosDiv.innerHTML += "</ul>";
+
 };
 
 formGastos.addEventListener("submit", (event) => {
