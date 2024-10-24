@@ -1,11 +1,14 @@
 import Balance from "./balance.js";
 import Gastos from "./gastos.js";
 import Ingresos from "./ingresos.js";
+import Presupuesto from "./presupuestos.js";
+import Historial from "./historialgastos.js";
 
 // Instanciar clases
 const gastos = new Gastos();
 const ingresos = new Ingresos();
 const balance = new Balance(gastos, ingresos);
+const historial = new Historial(gastos);
 
 // ***** Manejo de Balance *****
 const balanceDiv = document.querySelector("#balance-div");
@@ -20,15 +23,14 @@ const formGastos = document.querySelector("#gastos-form");
 const gastosDiv = document.querySelector("#gastos-div");
 const historialDiv = document.querySelector("#historial-div"); // Div para el historial
 
-const displayGastos = (gastosFiltrados = null, esHistorial = false) => {
-  const contenedor = esHistorial ? historialDiv : gastosDiv;
-  const gastosRegistrados = gastosFiltrados || gastos.obtenerGastos();
-  
-  contenedor.innerHTML = "<ul>";
-  gastosRegistrados.forEach(({ fecha, monto, descripcion, categoria }) => {
-    contenedor.innerHTML += `<li>${fecha} | ${monto} | ${descripcion} | ${categoria}</li>`;
+
+const displayGastos = (gastosAmostrar = []) => {
+  gastosDiv.innerHTML = "<ul>";
+  gastosAmostrar.forEach(({ fecha, monto, descripcion, categoria }) => {
+    gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion} | ${categoria}</li>`;
   });
-  contenedor.innerHTML += "</ul>";
+  gastosDiv.innerHTML += "</ul>";
+
 };
 
 formGastos.addEventListener("submit", (event) => {
@@ -40,7 +42,7 @@ formGastos.addEventListener("submit", (event) => {
   const categoria = document.querySelector("#categoria").value;
 
   gastos.registrarGasto(fecha, monto, descripcion, categoria);
-  displayGastos();
+  displayGastos(historial.obtenerGastosOrdenadosPorFecha());
   actualizarBalance(); // Actualizar balance después de registrar un gasto
 });
 
@@ -72,21 +74,21 @@ formIngresos.addEventListener("submit", (event) => {
 // ***** Filtrar por Categoría *****
 document.querySelector("#filtrar-categoria-btn").addEventListener("click", () => {
   const categoria = document.querySelector("#filtro-categoria").value;
-  const gastosFiltrados = gastos.obtenerGastos().filter(gasto => gasto.categoria === categoria);
-  displayGastos(gastosFiltrados, true); // Mostrar en el historial
+  const gastosFiltrados = historial.filtrarGastosPorCategoria(categoria);
+  displayGastos(gastosFiltrados);
 });
 
 // ***** Filtrar por Rango de Fechas *****
 document.querySelector("#filtrar-fechas-btn").addEventListener("click", () => {
-  const fechaInicio = new Date(document.querySelector("#fecha-inicio").value);
-  const fechaFin = new Date(document.querySelector("#fecha-fin").value);
+  const fechaInicio = document.querySelector("#fecha-inicio").value;
+  const fechaFin = document.querySelector("#fecha-fin").value;
+  const gastosFiltrados = historial.filtrarGastosPorRangoFecha(fechaInicio, fechaFin);
+  displayGastos(gastosFiltrados);
+});
 
-  const gastosFiltrados = gastos.obtenerGastos().filter(gasto => {
-    const fechaGasto = new Date(gasto.fecha);
-    return fechaGasto >= fechaInicio && fechaGasto <= fechaFin;
-  });
-
-  displayGastos(gastosFiltrados, true); // Mostrar en el historial
+//mostrar todos los gastos
+document.querySelector("#mostrar-todos-btn").addEventListener("click", () => {
+  displayGastos(historial.obtenerGastosOrdenadosPorFecha());
 });
 
 // ***** Mostrar Todo el Historial de Gastos *****
