@@ -133,7 +133,7 @@ document.querySelector("#filtrar-fechas-ingreso-btn").addEventListener("click", 
 });
 
 // Mostrar todos los ingresos
-document.querySelector("#mostrar-todos-ingresos-btn").addEventListener("click", () => {
+document.querySelector("#mostrar-todos-btn").addEventListener("click", () => {
   const todosLosIngresos = historialIngresos.obtenerIngresosOrdenadosPorFecha();
   displayIngresos(todosLosIngresos);
 });
