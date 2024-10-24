@@ -9,14 +9,14 @@ const gastosDiv = document.querySelector("#gastos-div");
 const gastos = new Gastos();
 const historial = new Historial(gastos);
 
-const displayGastos = () => {
-  const gastosRegistrados = gastos.obtenerGastos();
+const displayGastos = (gastosAmostrar = []) => {
   gastosDiv.innerHTML = "<ul>";
-  gastosRegistrados.forEach(({ fecha, monto, descripcion, categoria }) => {
+  gastosAmostrar.forEach(({ fecha, monto, descripcion, categoria }) => {
     gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion} | ${categoria}</li>`;
   });
   gastosDiv.innerHTML += "</ul>";
 };
+
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -32,8 +32,10 @@ form.addEventListener("submit", (event) => {
 
 document.querySelector("#filtrar-categoria-btn").addEventListener("click", () => {
   const categoria = document.querySelector("#filtro-categoria").value;
-  displayGastos(historial.filtrarGastosPorCategoria(categoria));
+  const gastosFiltrados = historial.filtrarGastosPorCategoria(categoria);
+  displayGastos(gastosFiltrados);
 });
+
 
 document.querySelector("#filtrar-fechas-btn").addEventListener("click", () => {
   const fechaInicio = document.querySelector("#fecha-inicio").value;
