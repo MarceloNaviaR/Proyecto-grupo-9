@@ -88,3 +88,9 @@ document.querySelector("#filtrar-fechas-btn").addEventListener("click", () => {
 
   displayGastos(gastosFiltrados, true); // Mostrar en el historial
 });
+
+// ***** Mostrar Todo el Historial de Gastos *****
+document.querySelector("#mostrar-todo-historial-btn").addEventListener("click", () => {
+  const todosLosGastos = gastos.obtenerGastos(); // Obtener todos los gastos registrados
+  displayGastos(todosLosGastos, true); // Mostrar en el historial
+});
