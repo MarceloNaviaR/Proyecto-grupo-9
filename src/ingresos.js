@@ -1,13 +1,10 @@
-import Ingreso from "./ingreso.js";
-
 class Ingresos {
   constructor() {
     this.ingresos = [];
   }
 
   registrarIngreso(fecha, monto, descripcion) {
-    const nuevoIngreso = new Ingreso(fecha, monto, descripcion);
-    this.ingresos.push(nuevoIngreso);
+    this.ingresos.push({ fecha, monto, descripcion });
   }
 
   obtenerIngresos() {
