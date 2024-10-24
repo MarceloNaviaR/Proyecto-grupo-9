@@ -85,13 +85,6 @@ document.querySelector("#filtrar-fechas-btn").addEventListener("click", () => {
   displayGastos(gastosFiltrados);
 });
 
-// ***** Filtrar por Monto *****
-document.querySelector("#filtrar-monto-btn").addEventListener("click", () => {
-  const montoMin = Number.parseFloat(document.querySelector("#monto-min").value);
-  const montoMax = Number.parseFloat(document.querySelector("#monto-max").value);
-  const gastosFiltrados = historial.filtrarGastosPorMonto(montoMin, montoMax);
-  displayGastos(gastosFiltrados);
-});
 
 // Presupuesto
 const montoPresupuesto = document.querySelector("#monto-presupuesto");
@@ -111,12 +104,6 @@ document.querySelector("#mostrar-todos-btn").addEventListener("click", () => {
   displayGastos(historial.obtenerGastosOrdenadosPorFecha());
 });
 
-// ***** Mostrar Todo el Historial de Gastos *****
-document.querySelector("#mostrar-todo-historial-btn").addEventListener("click", () => {
-  const todosLosGastos = gastos.obtenerGastos(); // Obtener todos los gastos registrados
-  displayGastos(todosLosGastos, true); // Mostrar en el historial
-});
-
 // ***** Filtrar ingresos por monto fijo *****
 document.querySelector("#filtrar-monto-fijo-btn").addEventListener("click", () => {
   const montoFijo = parseFloat(document.querySelector("#monto-fijo").value);
@@ -130,11 +117,6 @@ document.querySelector("#filtrar-fechas-ingreso-btn").addEventListener("click", 
   const fechaFin = document.querySelector("#fecha-ingreso-fin").value;
   const ingresosFiltradosPorFechas = historialIngresos.filtrarIngresosPorRangoFecha(fechaInicio, fechaFin);
   displayIngresos(ingresosFiltradosPorFechas);
-});
-
-// Mostrar todos los ingresos
-document.querySelector("#mostrar-todos-btn").addEventListener("click", () => {
-  displayIngresos(historialIngresos.obtenerIngresosOrdenadosPorFecha());
 });
 
 
