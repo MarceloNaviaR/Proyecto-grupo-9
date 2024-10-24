@@ -86,6 +86,18 @@ document.querySelector("#filtrar-fechas-btn").addEventListener("click", () => {
   displayGastos(gastosFiltrados);
 });
 
+//Presupuesto
+const montoPresupuesto = document.querySelector("#monto-presupuesto")
+const form_presupuesto = document.querySelector("#presupuesto-form")
+const div_presupuesto = document.querySelector("#presupuesto-div")
+const presupuestito = new Presupuesto;
+form_presupuesto.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const valor_presupuesto = Number.parseInt(montoPresupuesto.value);
+  presupuestito.agregarMonto(valor_presupuesto);
+  div_presupuesto.innerHTML = "<p>" + presupuestito.mostrarMonto() + "</p>";
+});
+
 //mostrar todos los gastos
 document.querySelector("#mostrar-todos-btn").addEventListener("click", () => {
   displayGastos(historial.obtenerGastosOrdenadosPorFecha());
