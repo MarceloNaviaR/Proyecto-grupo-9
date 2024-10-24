@@ -17,16 +17,29 @@
       <label for="descripcion-gasto">Descripción:</label>
       <input type="text" id="descripcion" required />
 
+      <label for="categoria">Categoría:</label>
+      <select id="categoria" required>
+        <option value="Sin Categoria" disabled selected>Selecciona una categoría</option>
+        <option value="Alimentación">Alimentación</option>
+        <option value="Transporte">Transporte</option>
+        <option value="Salud">Salud</option>
+        <option value="Educación">Educación</option>
+        <option value="Vestimenta">Vestimenta</option>
+        <option value="Otros">Otros</option>
+
       <button type="submit" id="registrar-gasto-button">Registrar gasto</button>
     </form>
 
     <h2>Filtrar por Categoría</h2>
     <label for="filtro-categoria">Categoría:</label>
     <select id="filtro-categoria">
-      <option value="comida">Comida</option>
-      <option value="transporte">Transporte</option>
-      <option value="entretenimiento">Entretenimiento</option>
-      <option value="otros">Otros</option>
+      <option value="Sin Categoria" disabled selected>Selecciona una categoría</option>
+        <option value="Alimentación">Alimentación</option>
+        <option value="Transporte">Transporte</option>
+        <option value="Salud">Salud</option>
+        <option value="Educación">Educación</option>
+        <option value="Vestimenta">Vestimenta</option>
+        <option value="Otros">Otros</option>
     </select>
     <button id="filtrar-categoria-btn">Filtrar</button>
 

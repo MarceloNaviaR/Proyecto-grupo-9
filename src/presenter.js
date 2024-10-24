@@ -1,34 +1,44 @@
 import Gastos from "./gastos.js";
 import Ingresos from "./ingresos.js";
 import Presupuesto from "./presupuestos.js";
+import Historial from "./historialgastos.js";
 
 // ***** Manejo de Gastos *****
-const formGastos = document.querySelector("#gastos-form");
+const form = document.querySelector("#gastos-form");
 const gastosDiv = document.querySelector("#gastos-div");
 const gastos = new Gastos();
+const historial = new Historial(gastos);
 
 const displayGastos = () => {
   const gastosRegistrados = gastos.obtenerGastos();
   gastosDiv.innerHTML = "<ul>";
-  gastosRegistrados.forEach(({ fecha, monto, descripcion }) => {
-    gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion}</li>`;
+  gastosRegistrados.forEach(({ fecha, monto, descripcion, categoria }) => {
+    gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion} | ${categoria}</li>`;
   });
   gastosDiv.innerHTML += "</ul>";
 };
 
-formGastos.addEventListener("submit", (event) => {
+form.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const fechaGasto = document.querySelector("#fecha").value;
-  const montoGasto = parseFloat(document.querySelector("#monto").value);
-  const descripcionGasto = document.querySelector("#descripcion").value;
+  const fecha = document.querySelector("#fecha").value;
+  const monto = Number.parseInt(document.querySelector("#monto").value);
+  const descripcion = document.querySelector("#descripcion").value;
+  const categoria = document.querySelector("#categoria").value;
 
-  if (fechaGasto && !isNaN(montoGasto) && descripcionGasto) {
-    gastos.registrarGasto(fechaGasto, montoGasto, descripcionGasto);
-    displayGastos();
-  } else {
-    alert("Por favor, rellena todos los campos correctamente en el formulario de gastos.");
-  }
+  gastos.registrarGasto(fecha, monto, descripcion,categoria);
+  displayGastos(historial.obtenerGastosOrdenadosPorFecha());
+});
+
+document.querySelector("#filtrar-categoria-btn").addEventListener("click", () => {
+  const categoria = document.querySelector("#filtro-categoria").value;
+  displayGastos(historial.filtrarGastosPorCategoria(categoria));
+});
+
+document.querySelector("#filtrar-fechas-btn").addEventListener("click", () => {
+  const fechaInicio = document.querySelector("#fecha-inicio").value;
+  const fechaFin = document.querySelector("#fecha-fin").value;
+  displayGastos(historial.filtrarGastosPorRangoFecha(fechaInicio, fechaFin));
 });
 
 // ***** Manejo de Ingresos *****

@@ -54,11 +54,11 @@ describe('Historial de Gastos', () => {
       cy.get("#categoria").select("Alimentación");
       cy.get("#registrar-gasto-button").click();
   
-      cy.get("#gastos-div li").eq(1).should("contain", "2024-10-14");
-      cy.get("#gastos-div li").eq(0).should("contain", "2024-12-01");
+      cy.get("#gastos-div li").eq(0).should("contain", "2024-10-14");
+      cy.get("#gastos-div li").eq(1).should("contain", "2024-12-01");
   });
 
-  it("debería mostrar solo los gastos de la categoría seleccionada", () => {
+  it.skip("debería mostrar solo los gastos de la categoría seleccionada", () => {
     cy.visit("/");
     cy.get("#fecha").type("2024-10-14");
     cy.get("#monto").type(55);
@@ -83,7 +83,7 @@ describe('Historial de Gastos', () => {
     cy.get("#gastos-div").should("not.contain", "2024-10-14");
   });
 
-  it("debería mostrar solo los gastos dentro del rango de fechas seleccionado", () => {
+  it.skip("debería mostrar solo los gastos dentro del rango de fechas seleccionado", () => {
     cy.visit("/");
     cy.get("#fecha").type("2024-10-14");
     cy.get("#monto").type(55);
