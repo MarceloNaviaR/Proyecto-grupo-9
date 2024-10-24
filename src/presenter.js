@@ -22,7 +22,7 @@ const actualizarBalance = () => {
 const formGastos = document.querySelector("#gastos-form");
 const gastosDiv = document.querySelector("#gastos-div");
 const historialDiv = document.querySelector("#historial-div"); // Div para el historial
-const historialDiv = document.querySelector("#historial-div"); // Div para el historial
+
 
 const displayGastos = (gastosAmostrar = []) => {
   gastosDiv.innerHTML = "<ul>";
