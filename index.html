@@ -1,67 +1,105 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
+<head>
     <title>Gastos e Ingresos</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body>
-    <h1>Registro de gasto</h1>
+</head>
+<body>
+    <h1>Registro de Gasto</h1>
     <form id="gastos-form">
-      <label for="fecha-gasto">Fecha:</label>
-      <input type="date" id="fecha" required />
+        <label for="fecha-gasto">Fecha:</label>
+        <input type="date" id="fecha" required />
 
-      <label for="monto-gasto">Monto:</label>
-      <input type="number" id="monto" required />
+        <label for="monto-gasto">Monto:</label>
+        <input type="number" id="monto" required />
 
-      <label for="descripcion-gasto">Descripción:</label>
-      <input type="text" id="descripcion" required />
+        <label for="descripcion-gasto">Descripción:</label>
+        <input type="text" id="descripcion" required />
 
-      <button type="submit" id="registrar-gasto-button">Registrar gasto</button>
+        <label for="categoria">Categoría:</label>
+        <select id="categoria" required>
+            <option value="" disabled selected>Selecciona una categoría</option>
+            <option value="Alimentación">Alimentación</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Salud">Salud</option>
+            <option value="Educación">Educación</option>
+            <option value="Vestimenta">Vestimenta</option>
+            <option value="Otros">Otros</option>
+        </select>
+
+        <button type="submit" id="registrar-gasto-button">Registrar gasto</button>
     </form>
 
-    <h2>Filtrar por Categoría</h2>
-    <label for="filtro-categoria">Categoría:</label>
+    <div id="gastos-div"></div>
+
+    <h2>Filtrar Gastos</h2>
+    <label for="filtro-categoria">Filtrar por Categoría:</label>
     <select id="filtro-categoria">
-      <option value="comida">Comida</option>
-      <option value="transporte">Transporte</option>
-      <option value="entretenimiento">Entretenimiento</option>
-      <option value="otros">Otros</option>
+        <option value="" disabled selected>Selecciona una categoría</option>
+        <option value="Alimentación">Alimentación</option>
+        <option value="Transporte">Transporte</option>
+        <option value="Salud">Salud</option>
+        <option value="Educación">Educación</option>
+        <option value="Vestimenta">Vestimenta</option>
+        <option value="Otros">Otros</option>
     </select>
     <button id="filtrar-categoria-btn">Filtrar</button>
 
-    <h2>Filtrar por Rango de Fechas</h2>
+    <h2 for="filtro-fecha">Filtrar por Fecha</h2>
     <label for="fecha-inicio">Desde:</label>
     <input type="date" id="fecha-inicio" />
     <label for="fecha-fin">Hasta:</label>
     <input type="date" id="fecha-fin" />
     <button id="filtrar-fechas-btn">Filtrar</button>
+    <button id="mostrar-todos-btn">Mostrar todos</button>
 
-    <div id="gastos-div"></div>
+    <div id="historial-div"></div>
 
-    <h1>Registro de ingreso</h1>
-  <form id="ingresos-form">
-  <label for="fecha-ingreso">Fecha:</label>
-  <input type="date" id="fecha-ingreso" required />
+    <h1>Registro de Ingreso</h1>
+    <form id="ingresos-form">
+        <label for="fecha-ingreso">Fecha:</label>
+        <input type="date" id="fecha-ingreso" required />
 
-  <label for="monto-ingreso">Monto:</label>
-  <input type="number" id="monto-ingreso" required />
+        <label for="monto-ingreso">Monto:</label>
+        <input type="number" id="monto-ingreso" required />
 
-  <label for="fuente-ingreso">Descripción:</label>
-  <input type="text" id="fuente-ingreso" required />
+        <label for="fuente-ingreso">Descripción:</label>
+        <input type="text" id="fuente-ingreso" required />
 
-  <button type="submit" id="registrar-ingresos-button">Registrar ingreso</button>
-  </form>
+        <button type="submit" id="registrar-ingresos-button">Registrar ingreso</button>
+    </form>
+
     <div id="ingresos-div"></div>
 
-    <h1>Registro presupuesto</h1>
+    <h2>Filtrar por Monto Fijo</h2>
+    <label for="monto-fijo">Monto:</label>
+    <input type="number" id="monto-fijo" />
+    <button id="filtrar-monto-fijo-btn">Filtrar</button>
+    <div id="ingresos-filtrados-monto-div"></div> <!-- Div para mostrar ingresos filtrados por monto -->
+
+    <h2>Filtrar por Fecha de Ingreso</h2>
+    <label for="fecha-ingreso-inicio">Desde:</label>
+    <input type="date" id="fecha-ingreso-inicio" />
+    <label for="fecha-ingreso-fin">Hasta:</label>
+    <input type="date" id="fecha-ingreso-fin" />
+    <button id="filtrar-fechas-ingreso-btn">Filtrar</button>
+    <button id="mostrar-todos-ingresos-btn">Mostrar todos</button>
+    <div id="ingresos-filtrados-fecha-div"></div> <!-- Div para mostrar ingresos filtrados por fechas -->
+
+    <h1>Registro Presupuesto</h1>
     <form id="presupuesto-form">
-      <label for="monto-presupuesto">Presupuesto:</label>
-      <input type="number" id="monto-presupuesto" />
-      <input type="submit" value="registrar presupuesto" id="presupuesto-button" />
+        <label for="monto-presupuesto">Presupuesto:</label>
+        <input type="number" id="monto-presupuesto" />
+        <input type="submit" value="Registrar presupuesto" id="presupuesto-button" />
     </form>
     <div id="presupuesto-div"></div>
 
+    <h2>Balance</h2>
+    <div id="balance-div">
+        <p>Balance: 0</p>
+    </div>
+
     <script type="module" src="./src/presenter.js"></script>
-  </body>
+</body>
 </html>

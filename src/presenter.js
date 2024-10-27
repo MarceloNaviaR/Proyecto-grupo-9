@@ -1,17 +1,34 @@
+import Balance from "./balance.js";
 import Gastos from "./gastos.js";
 import Ingresos from "./ingresos.js";
 import Presupuesto from "./presupuestos.js";
+import Historial from "./historialgastos.js";
+import HistorialIngresos from "./historialingresos.js"; // Importar historial de ingresos
+
+// Instanciar clases
+const gastos = new Gastos();
+const ingresos = new Ingresos();
+const balance = new Balance(gastos, ingresos);
+const historial = new Historial(gastos);
+const historialIngresos = new HistorialIngresos(ingresos); // Crear instancia de HistorialIngresos
+
+// ***** Manejo de Balance *****
+const balanceDiv = document.querySelector("#balance-div");
+
+const actualizarBalance = () => {
+  const balanceActual = balance.calcularBalance(); // Calcular el balance
+  balanceDiv.innerHTML = `<p>Balance: ${balanceActual}</p>`; // Mostrar balance
+};
 
 // ***** Manejo de Gastos *****
 const formGastos = document.querySelector("#gastos-form");
 const gastosDiv = document.querySelector("#gastos-div");
-const gastos = new Gastos();
+const historialDiv = document.querySelector("#historial-div"); // Div para el historial
 
-const displayGastos = () => {
-  const gastosRegistrados = gastos.obtenerGastos();
+const displayGastos = (gastosAmostrar = []) => {
   gastosDiv.innerHTML = "<ul>";
-  gastosRegistrados.forEach(({ fecha, monto, descripcion }) => {
-    gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion}</li>`;
+  gastosAmostrar.forEach(({ fecha, monto, descripcion, categoria }) => {
+    gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion} | ${categoria}</li>`;
   });
   gastosDiv.innerHTML += "</ul>";
 };
@@ -19,27 +36,23 @@ const displayGastos = () => {
 formGastos.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const fechaGasto = document.querySelector("#fecha").value;
-  const montoGasto = parseFloat(document.querySelector("#monto").value);
-  const descripcionGasto = document.querySelector("#descripcion").value;
+  const fecha = document.querySelector("#fecha").value;
+  const monto = Number.parseInt(document.querySelector("#monto").value);
+  const descripcion = document.querySelector("#descripcion").value;
+  const categoria = document.querySelector("#categoria").value;
 
-  if (fechaGasto && !isNaN(montoGasto) && descripcionGasto) {
-    gastos.registrarGasto(fechaGasto, montoGasto, descripcionGasto);
-    displayGastos();
-  } else {
-    alert("Por favor, rellena todos los campos correctamente en el formulario de gastos.");
-  }
+  gastos.registrarGasto(fecha, monto, descripcion, categoria);
+  displayGastos(historial.obtenerGastosOrdenadosPorFecha());
+  actualizarBalance(); // Actualizar balance después de registrar un gasto
 });
 
 // ***** Manejo de Ingresos *****
 const formIngresos = document.querySelector("#ingresos-form");
 const ingresosDiv = document.querySelector("#ingresos-div");
-const ingresos = new Ingresos();
 
-const displayIngresos = () => {
-  const ingresosRegistrados = ingresos.obtenerIngresos();
+const displayIngresos = (ingresosAmostrar = []) => {
   ingresosDiv.innerHTML = "<ul>";
-  ingresosRegistrados.forEach(({ fecha, monto, descripcion }) => {
+  ingresosAmostrar.forEach(({ fecha, monto, descripcion }) => {
     ingresosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion}</li>`;
   });
   ingresosDiv.innerHTML += "</ul>";
@@ -52,19 +65,32 @@ formIngresos.addEventListener("submit", (event) => {
   const montoIngreso = parseFloat(document.querySelector("#monto-ingreso").value);
   const descripcionIngreso = document.querySelector("#fuente-ingreso").value;
 
-  if (fechaIngreso && !isNaN(montoIngreso) && descripcionIngreso) {
-    ingresos.registrarIngreso(fechaIngreso, montoIngreso, descripcionIngreso);
-    displayIngresos();
-  } else {
-    alert("Por favor, rellena todos los campos correctamente en el formulario de ingresos.");
-  }
+  ingresos.registrarIngreso(fechaIngreso, montoIngreso, descripcionIngreso);
+  displayIngresos(ingresos.obtenerIngresos()); // Mostrar ingresos recién registrados
+  actualizarBalance(); // Actualizar balance después de registrar un ingreso
 });
 
-//Presupuesto
-const montoPresupuesto = document.querySelector("#monto-presupuesto")
-const form_presupuesto = document.querySelector("#presupuesto-form")
-const div_presupuesto = document.querySelector("#presupuesto-div")
-const presupuestito = new Presupuesto;
+// ***** Filtrar por Categoría *****
+document.querySelector("#filtrar-categoria-btn").addEventListener("click", () => {
+  const categoria = document.querySelector("#filtro-categoria").value;
+  const gastosFiltrados = historial.filtrarGastosPorCategoria(categoria);
+  displayGastos(gastosFiltrados);
+});
+
+// ***** Filtrar por Rango de Fechas *****
+document.querySelector("#filtrar-fechas-btn").addEventListener("click", () => {
+  const fechaInicio = document.querySelector("#fecha-inicio").value;
+  const fechaFin = document.querySelector("#fecha-fin").value;
+  const gastosFiltrados = historial.filtrarGastosPorRangoFecha(fechaInicio, fechaFin);
+  displayGastos(gastosFiltrados);
+});
+
+
+// Presupuesto
+const montoPresupuesto = document.querySelector("#monto-presupuesto");
+const form_presupuesto = document.querySelector("#presupuesto-form");
+const div_presupuesto = document.querySelector("#presupuesto-div");
+const presupuestito = new Presupuesto();
 
 form_presupuesto.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -72,3 +98,26 @@ form_presupuesto.addEventListener("submit", (event) => {
   presupuestito.agregarMonto(valor_presupuesto);
   div_presupuesto.innerHTML = "<p>" + presupuestito.mostrarMonto() + "</p>";
 });
+
+// Mostrar todos los gastos
+document.querySelector("#mostrar-todos-btn").addEventListener("click", () => {
+  displayGastos(historial.obtenerGastosOrdenadosPorFecha());
+});
+
+// ***** Filtrar ingresos por monto fijo *****
+document.querySelector("#filtrar-monto-fijo-btn").addEventListener("click", () => {
+  const montoFijo = parseFloat(document.querySelector("#monto-fijo").value);
+  const ingresosFiltradosPorMonto = historialIngresos.filtrarIngresosPorMontoMinimo(montoFijo);
+  displayIngresos(ingresosFiltradosPorMonto);
+});
+
+// ***** Filtrar ingresos por rango de fechas *****
+document.querySelector("#filtrar-fechas-ingreso-btn").addEventListener("click", () => {
+  const fechaInicio = document.querySelector("#fecha-ingreso-inicio").value;
+  const fechaFin = document.querySelector("#fecha-ingreso-fin").value;
+  const ingresosFiltradosPorFechas = historialIngresos.filtrarIngresosPorRangoFecha(fechaInicio, fechaFin);
+  displayIngresos(ingresosFiltradosPorFechas);
+});
+
+
+

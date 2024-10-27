@@ -15,7 +15,7 @@ describe("Registro de gasto", () => {
 
   it("debería mostrar todos los gastos registrados", () => {
     cy.visit("/");
-    cy.get("#fecha").type("2024-10-14");
+    cy.get("#fecha").type("2024-10-15");
     cy.get("#monto").type(55);
     cy.get("#descripcion").type("Fotocopias varias");
     cy.get("#categoria").select("Educación");
@@ -27,7 +27,7 @@ describe("Registro de gasto", () => {
     cy.get("#categoria").select("Vestimenta");
     cy.get("#registrar-gasto-button").click();
 
-    cy.get("#gastos-div").should("contain", "2024-10-14")
+    cy.get("#gastos-div").should("contain", "2024-10-15")
       .and("contain", "55")
       .and("contain", "Fotocopias varias")
       .and("contain", "Educación");
@@ -54,8 +54,8 @@ describe('Historial de Gastos', () => {
       cy.get("#categoria").select("Alimentación");
       cy.get("#registrar-gasto-button").click();
   
-      cy.get("#gastos-div li").eq(1).should("contain", "2024-10-14");
-      cy.get("#gastos-div li").eq(0).should("contain", "2024-12-01");
+      cy.get("#gastos-div li").eq(0).should("contain", "2024-10-14");
+      cy.get("#gastos-div li").eq(1).should("contain", "2024-12-01");
   });
 
   it("debería mostrar solo los gastos de la categoría seleccionada", () => {
