@@ -1,4 +1,4 @@
-import { ingresos } from './ingresos.js';
+import { Ingresos } from './ingresos.js';
 
 class HistorialIngresos {
     constructor(ingresos) {
