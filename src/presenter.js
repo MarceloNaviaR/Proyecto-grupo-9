@@ -118,8 +118,8 @@ document.querySelector("#filtrar-fechas-ingreso-btn").addEventListener("click", 
   displayIngresos(ingresosFiltradosPorFechas);
 });
 
-// Mostrar todos los gastos
+// Mostrar todos los ingresos
 document.querySelector("#mostrar-todos-ingresos-btn").addEventListener("click", () => {
-  displayGastos(historial.obtenerIngresosOrdenados());
+  displayIngresos(historialIngresos.obtenerIngresosOrdenadosPorFecha());
 });
 
