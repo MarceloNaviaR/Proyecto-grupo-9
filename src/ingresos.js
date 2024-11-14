@@ -13,6 +13,10 @@ class Ingresos {
   obtenerIngresos() {
     return this.ingresos;
   }
+
+  obtenerIngresosOrdenados() {
+    return this.ingresos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+  }
 }
 
 export default Ingresos;
