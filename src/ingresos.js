@@ -1,4 +1,4 @@
-import Ingreso from './ingreso.js';
+import Ingreso from './ingresoConstructor.js';
 
 class Ingresos {
   constructor() {
