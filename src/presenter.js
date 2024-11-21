@@ -57,6 +57,7 @@ const displayIngresos = (ingresosAmostrar = []) => {
       <li>
         ${fecha} | ${monto} | ${descripcion}
         <button class="editar-btn" data-index="${index}">Editar</button>
+        <button class="eliminar-btn" data-index="${index}">Eliminar</button>
       </li>`;
   });
   ingresosDiv.innerHTML += "</ul>";
@@ -67,6 +68,14 @@ const displayIngresos = (ingresosAmostrar = []) => {
       const index = event.target.dataset.index;
       const ingresoSeleccionado = ingresos.obtenerIngresos()[index];
       rellenarFormularioIngreso(ingresoSeleccionado, index);
+    })
+  );
+
+  document.querySelectorAll(".eliminar-btn").forEach((btn) =>
+    btn.addEventListener("click", (event) => {
+      const index = event.target.dataset.index;
+      ingresos.eliminarIngreso(index);
+      actualizarVistaIngresos(); // Actualizar la vista después de eliminar
     })
   );
 };

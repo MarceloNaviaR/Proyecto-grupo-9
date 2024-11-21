@@ -32,5 +32,27 @@ describe("Ingresos", () => {
     expect(ingresos.obtenerIngresos()).toEqual(ingresosPrevios);
   });
 
+  it("debería eliminar correctamente un ingreso existente", () => {
+    const ingresos = new Ingresos();
+    ingresos.registrarIngreso("2024-10-12", 45, "ahorro");
+    ingresos.registrarIngreso("2024-11-01", 200, "trabajo freelance");
+
+    ingresos.eliminarIngreso(0);
+
+    expect(ingresos.obtenerIngresos()).toEqual([
+      { fecha: "2024-11-01", monto: 200, descripcion: "trabajo freelance" },
+    ]);
+  });
+
+  it("debería mantener los ingresos intactos si el índice para eliminar no es válido", () => {
+    const ingresos = new Ingresos();
+    ingresos.registrarIngreso("2024-10-12", 45, "ahorro");
+    const ingresosPrevios = [...ingresos.obtenerIngresos()];
+
+    ingresos.eliminarIngreso(5);
+
+    expect(ingresos.obtenerIngresos()).toEqual(ingresosPrevios);
+  });
+
 });
 

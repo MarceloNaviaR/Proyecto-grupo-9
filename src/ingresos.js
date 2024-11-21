@@ -27,6 +27,12 @@ class Ingresos {
       );
     }
   }
+
+  eliminarIngreso(index) {
+    if (this.ingresos[index]) {
+      this.ingresos.splice(index, 1);
+    }
+  }
 }
 
 export default Ingresos;
