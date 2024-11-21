@@ -23,4 +23,28 @@ describe("Editar un Ingreso", () => {
         .and("contain", "Trabajo Freelance");
     });
   });
+
+  describe("Eliminar un Ingreso", () => {
+    beforeEach(() => {
+      cy.visit("/"); 
+    });
+  
+    it.skip("debería eliminar un ingreso correctamente", () => {
+      // Registrar un ingreso
+      cy.get("#fecha-ingreso").type("2024-10-20");
+      cy.get("#monto-ingreso").type("100");
+      cy.get("#fuente-ingreso").type("Trabajo");
+      cy.get("#registrar-ingresos-button").click();
+  
+      
+      cy.get("#ingresos-div").should("contain", "Trabajo");
+  
+      
+      cy.get("#ingresos-div li").contains("Trabajo").parent().find(".eliminar-btn").click();
+  
+    
+      cy.get("#ingresos-div").should("not.contain", "Trabajo");
+    });
+  });
+  
   
