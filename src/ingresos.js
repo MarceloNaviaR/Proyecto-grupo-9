@@ -17,6 +17,16 @@ class Ingresos {
   obtenerIngresosOrdenados() {
     return this.ingresos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
   }
+
+  editarIngreso(index, nuevoIngreso) {
+    if (this.ingresos[index]) {
+      this.ingresos[index] = new Ingreso(
+        nuevoIngreso.fecha,
+        nuevoIngreso.monto,
+        nuevoIngreso.descripcion
+      );
+    }
+  }
 }
 
 export default Ingresos;

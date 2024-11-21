@@ -52,10 +52,23 @@ const ingresosDiv = document.querySelector("#ingresos-div");
 
 const displayIngresos = (ingresosAmostrar = []) => {
   ingresosDiv.innerHTML = "<ul>";
-  ingresosAmostrar.forEach(({ fecha, monto, descripcion }) => {
-    ingresosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion}</li>`;
+  ingresosAmostrar.forEach(({ fecha, monto, descripcion }, index) => {
+    ingresosDiv.innerHTML += `
+      <li>
+        ${fecha} | ${monto} | ${descripcion}
+        <button class="editar-btn" data-index="${index}">Editar</button>
+      </li>`;
   });
   ingresosDiv.innerHTML += "</ul>";
+
+  // Añadir eventos a los botones de edición
+  document.querySelectorAll(".editar-btn").forEach((btn) =>
+    btn.addEventListener("click", (event) => {
+      const index = event.target.dataset.index;
+      const ingresoSeleccionado = ingresos.obtenerIngresos()[index];
+      rellenarFormularioIngreso(ingresoSeleccionado, index);
+    })
+  );
 };
 
 formIngresos.addEventListener("submit", (event) => {
@@ -66,9 +79,50 @@ formIngresos.addEventListener("submit", (event) => {
   const descripcionIngreso = document.querySelector("#fuente-ingreso").value;
 
   ingresos.registrarIngreso(fechaIngreso, montoIngreso, descripcionIngreso);
-  displayIngresos(ingresos.obtenerIngresos()); // Mostrar ingresos recién registrados
-  actualizarBalance(); // Actualizar balance después de registrar un ingreso
+  actualizarVistaIngresos(); // Actualizar la vista y balance
 });
+
+// ***** Función para rellenar el formulario con los datos del ingreso *****
+const rellenarFormularioIngreso = (ingreso, index) => {
+  document.querySelector("#fecha-ingreso").value = ingreso.fecha;
+  document.querySelector("#monto-ingreso").value = ingreso.monto;
+  document.querySelector("#fuente-ingreso").value = ingreso.descripcion;
+
+  // Crear o mostrar el botón de guardar cambios
+  let guardarCambiosBtn = document.querySelector("#guardar-cambios-btn");
+  if (!guardarCambiosBtn) {
+    guardarCambiosBtn = document.createElement("button");
+    guardarCambiosBtn.id = "guardar-cambios-btn";
+    guardarCambiosBtn.textContent = "Guardar Cambios";
+    formIngresos.appendChild(guardarCambiosBtn);
+  }
+
+  guardarCambiosBtn.onclick = (e) => {
+    e.preventDefault();
+
+    // Obtener los nuevos valores del formulario
+    const fecha = document.querySelector("#fecha-ingreso").value;
+    const monto = parseFloat(document.querySelector("#monto-ingreso").value);
+    const descripcion = document.querySelector("#fuente-ingreso").value;
+
+    // Editar el ingreso utilizando la función en `ingresos.js`
+    ingresos.editarIngreso(index, { fecha, monto, descripcion });
+
+    // Actualizar la vista de ingresos y balance
+    actualizarVistaIngresos();
+
+    // Limpiar el formulario y eliminar el botón de guardar cambios
+    formIngresos.reset();
+    guardarCambiosBtn.remove();
+  };
+};
+
+// ***** Actualizar la vista después de registrar o editar *****
+const actualizarVistaIngresos = () => {
+  displayIngresos(ingresos.obtenerIngresos());
+  actualizarBalance(); // Actualizar el balance
+};
+
 
 // ***** Filtrar por Categoría *****
 document.querySelector("#filtrar-categoria-btn").addEventListener("click", () => {

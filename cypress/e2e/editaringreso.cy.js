@@ -3,7 +3,7 @@ describe("Editar un Ingreso", () => {
       cy.visit("/"); 
     });
   
-    it.skip("debería editar un ingreso correctamente", () => {
+    it("debería editar un ingreso correctamente", () => {
       // Registrar un ingreso
       cy.get("#fecha-ingreso").type("2024-10-20");
       cy.get("#monto-ingreso").type("100");
