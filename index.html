@@ -90,7 +90,7 @@
     <h1>Registro Presupuesto</h1>
     <form id="presupuesto-form">
         <label for="monto-presupuesto">Presupuesto:</label>
-        <input type="number" id="monto-presupuesto" />
+        <input type="number" id="monto-presupuesto" required />
         <input type="submit" value="Registrar presupuesto" id="presupuesto-button" />
     </form>
     <div id="presupuesto-div"></div>
@@ -100,7 +100,15 @@
         <p>Balance: 0</p>
     </div>
 
+    <div id="notificaciones"></div>
+
     <!-- Scripts -->
-    <script type="module" src="./src/presenter.js"></script>
+    <script type="module">
+        document.addEventListener("DOMContentLoaded", () => {
+            import("./src/presenter.js").catch((err) =>
+                console.error("Error al cargar el script presenter.js:", err)
+            );
+        });
+    </script>
 </body>
 </html>

@@ -4,7 +4,7 @@ describe("Presupuesto Mensual", () => {
     cy.visit("/"); 
   });
 
-  it.skip("debería permitir al usuario definir un monto de presupuesto", () => {
+  it("debería permitir al usuario definir un monto de presupuesto", () => {
     cy.get("#monto-presupuesto").type("1000");
     cy.get("#presupuesto-button").click();
     cy.get("#presupuesto-div").should("contain", "Monto: 1000");

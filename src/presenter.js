@@ -37,13 +37,27 @@ formGastos.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const fecha = document.querySelector("#fecha").value;
-  const monto = Number.parseInt(document.querySelector("#monto").value);
+  const monto = parseFloat(document.querySelector("#monto").value);
   const descripcion = document.querySelector("#descripcion").value;
   const categoria = document.querySelector("#categoria").value;
 
+  const nuevoGasto = { fecha, monto, descripcion, categoria };
+
+  // Registrar el gasto
   gastos.registrarGasto(fecha, monto, descripcion, categoria);
+
+  // Verificar el presupuesto y mostrar notificaciones
+  if (notificacionesDiv) {
+    const resultadoPresupuesto = presupuestito.verificarPresupuesto(nuevoGasto.monto);
+    console.log("Resultado de verificación de presupuesto:", resultadoPresupuesto); // Para depuración
+    notificacionesDiv.innerHTML = `<p>${resultadoPresupuesto.mensaje}</p>`;
+  } else {
+    console.error("El elemento #notificaciones no existe en el DOM.");
+  }
+
+  // Actualizar la vista
   displayGastos(historial.obtenerGastosOrdenadosPorFecha());
-  actualizarBalance(); // Actualizar balance después de registrar un gasto
+  actualizarBalance();
 });
 
 // ***** Manejo de Ingresos *****
@@ -149,21 +163,41 @@ document.querySelector("#filtrar-fechas-btn").addEventListener("click", () => {
 });
 
 // Presupuesto
-const montoPresupuesto = document.querySelector("#monto-presupuesto");
-const form_presupuesto = document.querySelector("#presupuesto-form");
-const div_presupuesto = document.querySelector("#presupuesto-div");
+const formPresupuesto = document.querySelector("#presupuesto-form");
+const presupuestoDiv = document.querySelector("#presupuesto-div");
+const notificacionesDiv = document.querySelector("#notificaciones");
 const presupuestito = new Presupuesto();
 
-form_presupuesto.addEventListener("submit", (event) => {
+// Registrar un presupuesto general
+formPresupuesto.addEventListener("submit", (event) => {
   event.preventDefault();
-  const valor_presupuesto = Number.parseInt(montoPresupuesto.value);
-  presupuestito.agregarMonto(valor_presupuesto);
-  div_presupuesto.innerHTML = "<p>" + presupuestito.mostrarMonto() + "</p>";
+
+  const montoPresupuesto = parseFloat(document.querySelector("#monto-presupuesto").value);
+  presupuestito.agregarMonto(montoPresupuesto);
+
+  presupuestoDiv.innerHTML = `<p>${presupuestito.mostrarMonto()}</p>`;
 });
+// Verificar y notificar si se excede o se está cerca del presupuesto
+const verificarPresupuesto = (gasto) => {
+  if (presupuestito.verificarExceso(gasto.monto)) {
+    notificacionesDiv.innerHTML = `<p>¡Has excedido el presupuesto general!</p>`;
+  } else if (presupuestito.verificarCercania(gasto.monto)) {
+    notificacionesDiv.innerHTML = `<p>¡Estás cerca de exceder tu presupuesto general!</p>`;
+  } else {
+    notificacionesDiv.innerHTML = ""; // Limpiar notificaciones si no hay problema
+  }
+};
+
+
 
 // Mostrar todos los gastos
 document.querySelector("#mostrar-todos-btn").addEventListener("click", () => {
-  displayGastos(historial.obtenerGastosOrdenadosPorFecha());
+  const todosLosGastos = gastos.obtenerGastos();
+  gastosDiv.innerHTML = "<ul>";
+  todosLosGastos.forEach(({ fecha, monto, descripcion, categoria }) => {
+    gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion} | ${categoria}</li>`;
+  });
+  gastosDiv.innerHTML += "</ul>";
 });
 
 // ***** Filtrar ingresos por descripción *****
