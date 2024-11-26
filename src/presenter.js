@@ -279,6 +279,19 @@ const rellenarFormularioGasto = (gasto, index) => {
       displayGastos(todosLosGastos);
       actualizarBalance();
     };
+
+    document.querySelector("#exportar-excel-btn").addEventListener("click", () => {
+      const csv = gastos.exportarGastosaExcel();
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "gastos.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
 };
 
 import BalancesPorFechas from "./balancesPorFechas.js";
