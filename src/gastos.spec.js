@@ -48,4 +48,17 @@ describe("Gastos", () => {
       { fecha: "2024-05-06", monto: 23, descripcion: "cine", categoria: "Entretenimiento" },
     ]);
   });
+
+  it("debería eliminar correctamente un gasto", () => {
+    const gastos = new Gastos();
+
+    gastos.registrarGasto("2024-08-12", 20, "pasajes", "Transporte");
+    gastos.registrarGasto("2024-05-06", 23, "cine", "Entretenimiento");
+
+    gastos.eliminarGasto(0);
+
+    expect(gastos.obtenerGastos()).toEqual([
+      { fecha: "2024-05-06", monto: 23, descripcion: "cine", categoria: "Entretenimiento" },
+    ]);
+  });
 });
