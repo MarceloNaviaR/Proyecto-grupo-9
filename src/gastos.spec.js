@@ -36,12 +36,12 @@ describe("Gastos", () => {
   });
 
   it("debería editar correctamente un gasto", () => {
-    const gastos = new Gastos();
+    let gastos = new Gastos();
 
     gastos.registrarGasto("2024-08-12", 20, "pasajes", "Transporte");
     gastos.registrarGasto("2024-05-06", 23, "cine", "Entretenimiento");
 
-    gastos.editarGasto(0, "2024-08-12", 25, "pasajes", "Transporte");
+    gastos.editarGasto(0, { fecha: "2024-08-12", monto: 25, descripcion: "pasajes", categoria: "Transporte" });
 
     expect(gastos.obtenerGastos()).toEqual([
       { fecha: "2024-08-12", monto: 25, descripcion: "pasajes", categoria: "Transporte" },
