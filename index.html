@@ -102,6 +102,15 @@
 
     <div id="notificaciones"></div>
     
+    <h2>Historial de Balances por Fechas</h2>
+<label for="fecha-balance-inicio">Desde:</label>
+<input type="date" id="fecha-balance-inicio" />
+<label for="fecha-balance-fin">Hasta:</label>
+<input type="date" id="fecha-balance-fin" />
+<button id="generar-balances-fechas-btn">Generar Historial</button>
+<div id="balances-fechas-div"></div>
+
+
     <!-- Scripts -->
     <script type="module">
         document.addEventListener("DOMContentLoaded", () => {

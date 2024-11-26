@@ -281,3 +281,44 @@ const rellenarFormularioGasto = (gasto, index) => {
     };
 };
 
+import BalancesPorFechas from "./balancesPorFechas.js";
+
+// Otros imports necesarios
+import Gastos from "./gastos.js";
+import Ingresos from "./ingresos.js";
+import Historial from "./historialgastos.js";
+
+// Aquí se colocan las funciones y manejadores de eventos
+const generarHistorialBalancesPorFechas = () => {
+  const fechaInicio = document.querySelector("#fecha-balance-inicio").value;
+  const fechaFin = document.querySelector("#fecha-balance-fin").value;
+
+  if (!fechaInicio || !fechaFin) {
+    console.error("Debe ingresar un rango de fechas válido.");
+    return;
+  }
+
+  const balancesPorFechas = new BalancesPorFechas(historial, ingresos);
+  const resultado = balancesPorFechas.calcularBalancesPorFechas(fechaInicio, fechaFin);
+
+  const balancesFechasDiv = document.querySelector("#balances-fechas-div");
+  if (!balancesFechasDiv) {
+    console.error("El contenedor #balances-fechas-div no existe.");
+    return;
+  }
+
+  balancesFechasDiv.innerHTML = `
+    <p><strong>Historial de Balances:</strong></p>
+    <ul>
+      <li>Desde: ${resultado.fechaInicio}</li>
+      <li>Hasta: ${resultado.fechaFin}</li>
+      <li>Total Ingresos: ${resultado.totalIngresos.toFixed(2)}</li>
+      <li>Total Gastos: ${resultado.totalGastos.toFixed(2)}</li>
+      <li>Balance: ${resultado.balance.toFixed(2)}</li>
+    </ul>
+  `;
+};
+
+document.querySelector("#generar-balances-fechas-btn").addEventListener("click", generarHistorialBalancesPorFechas);
+
+
