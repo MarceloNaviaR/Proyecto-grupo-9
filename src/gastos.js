@@ -18,6 +18,11 @@ class Gastos {
   editarGasto(index, fecha, monto, descripcion, categoria) {
     this.gastos[index] = { fecha, monto, descripcion, categoria };
   }
+
+  eliminarGasto(index) {
+    if (index < 0 || index >= this.gastos.length) return;
+    this.gastos.splice(index, 1);
+  }
 }
 
 export default Gastos;
