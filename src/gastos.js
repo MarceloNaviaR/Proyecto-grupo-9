@@ -14,6 +14,10 @@ class Gastos {
   obtenerGastosOrdenados() {
     return this.gastos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
   }
+
+  editarGasto(index, fecha, monto, descripcion, categoria) {
+    this.gastos[index] = { fecha, monto, descripcion, categoria };
+  }
 }
 
 export default Gastos;
