@@ -12,7 +12,7 @@ describe("Reporte de Balance", () => {
   
 
       cy.get("#fecha").type("2024-10-22");
-      cy.get("#monto").type(50);
+      cy.get("#monto").type(50);``
       cy.get("#descripcion").type("Compras");
       cy.get("#categoria").select("Otros");
       cy.get("#registrar-gasto-button").click();
