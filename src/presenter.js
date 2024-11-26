@@ -27,10 +27,30 @@ const historialDiv = document.querySelector("#historial-div"); // Div para el hi
 
 const displayGastos = (gastosAmostrar = []) => {
   gastosDiv.innerHTML = "<ul>";
-  gastosAmostrar.forEach(({ fecha, monto, descripcion, categoria }) => {
-    gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion} | ${categoria}</li>`;
+  gastosAmostrar.forEach(({ fecha, monto, descripcion, categoria }, index) => {
+    gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion} | ${categoria}
+      <button class="editar-btn" data-index="${index}">Editar</button>
+      <button class="eliminar-btn" data-index="${index}">Eliminar</button>
+    </li>`;
   });
   gastosDiv.innerHTML += "</ul>";
+
+  document.querySelectorAll(".editar-btn").forEach((btn) =>
+    btn.addEventListener("click", (event) => {
+      const index = event.target.dataset.index;
+      const gastoSeleccionado = gastos.obtenerGastos()[index];
+      rellenarFormularioGasto(gastoSeleccionado, index);
+    })
+  );
+
+  document.querySelectorAll(".eliminar-btn").forEach((btn) =>
+    btn.addEventListener("click", (event) => {
+      const index = event.target.dataset.index;
+      gastos.eliminarGasto(index);
+      displayGastos(historial.obtenerGastosOrdenadosPorFecha());
+      actualizarBalance();
+    })
+  );
 };
 
 formGastos.addEventListener("submit", (event) => {
@@ -193,11 +213,7 @@ const verificarPresupuesto = (gasto) => {
 // Mostrar todos los gastos
 document.querySelector("#mostrar-todos-btn").addEventListener("click", () => {
   const todosLosGastos = gastos.obtenerGastos();
-  gastosDiv.innerHTML = "<ul>";
-  todosLosGastos.forEach(({ fecha, monto, descripcion, categoria }) => {
-    gastosDiv.innerHTML += `<li>${fecha} | ${monto} | ${descripcion} | ${categoria}</li>`;
-  });
-  gastosDiv.innerHTML += "</ul>";
+  displayGastos(todosLosGastos);
 });
 
 // ***** Filtrar ingresos por descripción *****
@@ -219,4 +235,49 @@ document.querySelector("#filtrar-fechas-ingreso-btn").addEventListener("click", 
 document.querySelector("#mostrar-todos-ingresos-btn").addEventListener("click", () => {
   displayIngresos(historialIngresos.obtenerIngresosOrdenadosPorFecha());
 });
+
+//editar y eliminar gastos
+//Función para rellenar el formulario con los datos del gasto
+const rellenarFormularioGasto = (gasto, index) => {
+  document.querySelector("#fecha").value = gasto.fecha;
+  document.querySelector("#monto").value = gasto.monto;
+  document.querySelector("#descripcion").value = gasto.descripcion;
+  document.querySelector("#categoria").value = gasto.categoria;
+
+  // Crear o mostrar el botón de guardar cambios
+  let guardarCambiosBtn = document.querySelector("#guardar-cambios-btn");
+  if (!guardarCambiosBtn) {
+    guardarCambiosBtn = document.createElement("button");
+    guardarCambiosBtn.id = "guardar-cambios-btn";
+    guardarCambiosBtn.textContent = "Guardar Cambios";
+    formGastos.appendChild(guardarCambiosBtn);
+  }
+
+  guardarCambiosBtn.onclick = (e) => {
+    e.preventDefault();
+
+    // Obtener los nuevos valores del formulario
+    const fecha = document.querySelector("#fecha").value;
+    const monto = parseFloat(document.querySelector("#monto").value);
+    const descripcion = document.querySelector("#descripcion").value;
+    const categoria = document.querySelector("#categoria").value;
+
+    // Editar el gasto utilizando la función en `gastos.js`
+    gastos.editarGasto(index, { fecha, monto, descripcion, categoria });
+
+    // Actualizar la vista de gastos y balance
+    actualizarVistaGastos();
+
+    // Limpiar el formulario y eliminar el botón de guardar cambios
+    formGastos.reset();
+    guardarCambiosBtn.remove();
+  };
+
+  //actualizar vista de gastos
+  const actualizarVistaGastos = () => {
+      const todosLosGastos = gastos.obtenerGastos();
+      displayGastos(todosLosGastos);
+      actualizarBalance();
+    };
+};
 
