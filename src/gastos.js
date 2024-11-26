@@ -34,6 +34,14 @@ class Gastos {
     this.gastos.splice(index, 1);
   }
   }
+
+  exportarGastosaExcel() {
+    let csv = 'Fecha,Monto,Descripción,Categoría\n';
+    this.gastos.forEach(gasto => {
+      csv += `${gasto.fecha},${gasto.monto},${gasto.descripcion},${gasto.categoria}\n`;
+    });
+    return csv;
+  }
 }
 
 export default Gastos;

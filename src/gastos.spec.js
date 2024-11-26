@@ -61,4 +61,17 @@ describe("Gastos", () => {
       { fecha: "2024-05-06", monto: 23, descripcion: "cine", categoria: "Entretenimiento" },
     ]);
   });
+
+  it("debería exportar los gastos a un archivo CSV correctamente", () => {
+    const gastos = new Gastos();
+
+    gastos.registrarGasto("2024-08-12", 20, "pasajes", "Transporte");
+    gastos.registrarGasto("2024-05-06", 23, "cine", "Entretenimiento");
+
+    expect(gastos.exportarGastosaExcel()).toBe(
+      "Fecha,Monto,Descripción,Categoría\n" +
+      "2024-08-12,20,pasajes,Transporte\n" +
+      "2024-05-06,23,cine,Entretenimiento\n"
+    );
+  });
 });
